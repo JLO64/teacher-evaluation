@@ -37,6 +37,12 @@ public class teacher_evaluation
     avgScore = 0.0;
   }
 
+  public teacher_evaluation(String newName, double score)   //a constructor
+  {
+    name = newName;
+    avgScore = score;
+  }
+  
   public String getName()   //an accesor (doesn't change anything, only accesses instance variables)
   {
     return name;
