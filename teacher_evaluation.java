@@ -1,46 +1,48 @@
 //Made by Julian Lopez
 
-import java.io.*;
 import java.util.*;
 
 public class teacher_evaluation
 {
   public static void main(String[] args)
   {
-		Scanner scan = new Scanner(System.in);
+    List<evalEntry> teacherList = new ArrayList<evalEntry>();   //creation of an ArrayList of the evalEntry object
+    
+    createEntry(teacherList);
 
-    System.out.println("What teacher do you want to evaluate?");
-    String teacherName = scan.nextLine();
-
-		evaluation cd = new evaluation();
-		
-		cd.nameChange(teacherName);
-
-    System.out.println(cd.getName());   //the accessor getting the name
-
-    List<evaluation> teacherList = new ArrayList<evaluation>();   //creation of a nArrayList of the evaluation object
-    teacherList.add(cd);    //adding the cd object to the ArrayList teacherList
-
-    for(evaluation eval : teacherList)    //for-each list that traverses the ArrayList of the evaluation object
+    for(evalEntry eval : teacherList)    //for-each list that traverses the ArrayList of the evalEntry object
 			System.out.println(eval.getName());
 			
 		System.out.println(teacherList.get(0).getName());
 
   }
 
+  public static List<evalEntry> createEntry(List<evalEntry> teachList)
+  {
+    System.out.println("What teacher do you want to evaluate?");
+    Scanner scan = new Scanner(System.in);
+    String teacherName = scan.nextLine();
+
+    evalEntry entry = new evalEntry();		
+    entry.nameChange(teacherName);
+    teachList.add(entry);    //adding the entry object to the ArrayList teachList
+
+    return teachList;
+  }
 }
-class evaluation
+
+class evalEntry
 {
-  private String name;    //instance variable name that is created everytime the class evaluation is created
+  private String name;    //instance variable name that is created everytime the class evalEntry is created
   private double avgScore;
 
-  public evaluation()   //a constructor
+  public evalEntry()   //a constructor
   {
     name = "";
     avgScore = 0.0;
   }
 
-  public evaluation(String newName, double score)   //another constructor highlighting method overloading(same method names with different parameters)
+  public evalEntry(String newName, double score)   //another constructor highlighting method overloading(same method names with different parameters)
   {
     name = newName;
     avgScore = score;
