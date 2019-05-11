@@ -37,7 +37,7 @@ public class teacher_evaluation
     avgScore = 0.0;
   }
 
-  public teacher_evaluation(String newName, double score)   //a constructor
+  public teacher_evaluation(String newName, double score)   //another constructor highlighting method overloading(same method names with different parameters)
   {
     name = newName;
     avgScore = score;
@@ -46,11 +46,21 @@ public class teacher_evaluation
   public String getName()   //an accesor (doesn't change anything, only accesses instance variables)
   {
     return name;
+  }
+  
+  public double getScore()   //another accesor (doesn't change anything, only accesses the instance variable for the score)
+  {
+    return avgScore;
 	}
 	
 	public void nameChange(String newName)	//a mutator (changes instance variable values)
 	{
 		name = newName;
+  }
+  
+  public void scoreChange(double score)	//another mutator (changes the instance variable for the average score)
+	{
+		avgScore = score;
 	}
 
 }
