@@ -10,14 +10,10 @@ public class teacher_evaluation
     
     createEntry(teacherList);
 
-    for(evalEntry eval : teacherList)    //for-each list that traverses the ArrayList of the evalEntry object
-			System.out.println(eval.getName());
-			
-		System.out.println(teacherList.get(0).getName());
-
+    printList(teacherList);
   }
 
-  public static List<evalEntry> createEntry(List<evalEntry> teachList)
+  public static List<evalEntry> createEntry(List<evalEntry> teacherList)
   {
     System.out.println("What teacher do you want to evaluate?");
     Scanner scan = new Scanner(System.in);
@@ -25,9 +21,17 @@ public class teacher_evaluation
 
     evalEntry entry = new evalEntry();		
     entry.nameChange(teacherName);
-    teachList.add(entry);    //adding the entry object to the ArrayList teachList
+    teacherList.add(entry);    //adding the entry object to the ArrayList teacherList
 
-    return teachList;
+    return teacherList;
+  }
+
+  public static void printList(List<evalEntry> teacherList)
+  {
+    for(evalEntry eval : teacherList)    //for-each list that traverses the ArrayList of the evalEntry object
+			System.out.println(eval.getName());
+			
+		System.out.println(teacherList.get(0).getName());
   }
 }
 
