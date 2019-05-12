@@ -21,21 +21,25 @@ public class teacher_evaluation
 
   public static List<evalEntry> createEntry(List<evalEntry> teacherList)
   {
+    evalEntry entry = new evalEntry();		
+
     System.out.println("What teacher do you want to evaluate?");
     Scanner scan = new Scanner(System.in);
     String teacherName = scan.nextLine();
-
-    evalEntry entry = new evalEntry();		
     entry.teachNameChange(teacherName);
-    teacherList.add(entry);    //adding the entry object to the ArrayList teacherList
 
+    System.out.println("What class does " + teacherName + " teach?");
+    String teacherClass = scan.nextLine();
+    entry.teachClassChange(teacherClass);
+
+    teacherList.add(entry);    //adding the entry object to the ArrayList teacherList
     return teacherList;
   }
 
   public static void printList(List<evalEntry> teacherList)
   {
     for(evalEntry eval : teacherList)    //for-each list that traverses the ArrayList of the evalEntry object
-			System.out.println(eval.getTeachName());
+			printTeachInfo(eval);
   }
 
   public static void printEntry(List<evalEntry> teacherList, int entryNum) {
@@ -45,6 +49,12 @@ public class teacher_evaluation
   public String getStudentName()   //an accesor (doesn't change anything, only accesses instance variables)
   {
     return studentName;
+  }
+
+  public static void printTeachInfo(evalEntry entry)
+  {
+    System.out.println("Teacher: " + entry.getTeachName());
+    System.out.println("Class: " + entry.getTeachClass());
   }
 }
 
@@ -90,7 +100,7 @@ class evalEntry   //represents a teacher
 
   public void teachClassChange(String newclass)	//a mutator (changes instance variable values)
 	{
-		teacherName = newclass;
+		teacherClass = newclass;
   }
   
   public void teachScoreChange(double score)	//another mutator (changes the instance variable for the average score)
