@@ -2,49 +2,56 @@
 //Made by Julian Lopez
 
 import java.io.*;
+import java.math.*;
 import java.util.*;
 
-public class teacher_evaluation {
+public class teacher_evaluation
+{
   private static String studentName = "";
-  List<String> questionList = new ArrayList<String>();
+  private static List<String> questionList = new ArrayList<String>();
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  {
     List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry object
 
+    readFile();
+
     Scanner scan = new Scanner(System.in);
-    System.out.println("What is your name?");
+    System.out.print("What is your name? ");
     studentName = scan.nextLine();
 
     createEntry(teacherList);
 
     printList(teacherList);
-
-    readFile();
   }
 
   public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList rrayList
   {
     evalEntry entry = new evalEntry();
 
-    System.out.println("What teacher do you want to evaluate?");
+    System.out.print("What teacher do you want to evaluate? ");
     Scanner scan = new Scanner(System.in);
     String teacherName = scan.nextLine();
     entry.teachNameChange(teacherName);
 
-    System.out.println("What class does " + teacherName + " teach?");
+    System.out.print("What class does " + teacherName + " teach? ");
     String teacherClass = scan.nextLine();
-    entry.teachClassChange(teacherClass);
+		entry.teachClassChange(teacherClass);
+		
+		entry.askQuestions(questionList);
 
     teacherList.add(entry); // adding the entry object to the ArrayList teacherList
     return teacherList;
   }
 
-  public static void printList(List<evalEntry> teacherList) {
+	public static void printList(List<evalEntry> teacherList)
+	{
     for (evalEntry eval : teacherList) // for-each list that traverses the ArrayList of the evalEntry object
       printTeachInfo(eval);
   }
 
-  public static void printEntry(List<evalEntry> teacherList, int entryNum) {
+	public static void printEntry(List<evalEntry> teacherList, int entryNum)
+	{
     System.out.println(teacherList.get(entryNum).getTeachName());
   }
 
@@ -53,30 +60,29 @@ public class teacher_evaluation {
     return studentName;
   }
 
-  public static void printTeachInfo(evalEntry entry) {
+	public static void printTeachInfo(evalEntry entry)
+	{
     System.out.println("\nStudent: " + getStudentName());
     System.out.println("Teacher: " + entry.getTeachName());
-    System.out.println("Class: " + entry.getTeachClass());
+    System.out.println("Teacher's Class: " + entry.getTeachClass());
     System.out.println("Teacher's Average Score: " + entry.getTeachScore());
   }
 
   public static void readFile()
   {
-    List<String> questionList = new ArrayList<String>();
-    
     try
     {
-      Scanner fileIn = new Scanner(new File("questions.txt"));
-      while(fileIn.hasNextLine())
-      {
-        System.out.println(fileIn.nextLine());
-        questionList.add(fileIn.nextLine());
-      }
+      Scanner questionScan = new Scanner(new File("questions.txt"));
+			while(questionScan.hasNextLine())
+			{
+				String line = questionScan.nextLine();
+				questionList.add(line);
+			}
     }
     catch (FileNotFoundException e)
     {
       // TODO Auto-generated catch block
-      e.printStackTrace();
+      //e.printStackTrace();
     }    
   }
 }
@@ -85,7 +91,8 @@ class evalEntry // represents a teacher
 {
   private String teacherName; // instance variable teacherName that is created everytime the class evalEntry is created
   private String teacherClass;
-  private double avgScore;
+	private double avgScore;
+	private static List<String> responces = new ArrayList<String>();
 
   public evalEntry() // a constructor
   {
@@ -129,13 +136,42 @@ class evalEntry // represents a teacher
   public void teachScoreChange(double score) // another mutator (changes the instance variable for the average score)
   {
     avgScore = score;
+	}
+	
+	public void askQuestions(List<String> questionList)
+	{
+		System.out.println("\nPlease reply with either \"Agree\" or \"Disagree\"");
+		for (String question : questionList)
+		{
+			System.out.print(question + " ");
+			Scanner response = new Scanner(System.in);
+			String responceLine = response.nextLine();
+			responces.add(responceLine);
+		}
+		double countEntries = 0;
+		double avgscore = 0;
+		for (String input : responces)
+		{
+      countEntries++;
+			if(input.equals("Agree"))
+			{
+        avgscore = avgscore + 1;
+			}
+			if(input.equals("Disagree"))
+			{
+				avgscore = avgscore + 0;
+			}
+    }
+    avgscore = avgscore /countEntries;
+    teachScoreChange(round(avgscore, 2));
   }
-}
 
-class evalSheet // represents the sheet to fillout
-{
-  
-  List<String> answerList = new ArrayList<String>();
+  public static double round(double value, int places)
+  {
+    if (places < 0) throw new IllegalArgumentException();
 
-  
+    BigDecimal bd = new BigDecimal(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
+  }
 }
