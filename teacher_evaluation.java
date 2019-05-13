@@ -11,8 +11,6 @@ public class teacher_evaluation {
   public static void main(String[] args) {
     List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry object
 
-    readFile();
-
     Scanner scan = new Scanner(System.in);
     System.out.println("What is your name?");
     studentName = scan.nextLine();
@@ -20,6 +18,8 @@ public class teacher_evaluation {
     createEntry(teacherList);
 
     printList(teacherList);
+
+    readFile();
   }
 
   public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList rrayList
