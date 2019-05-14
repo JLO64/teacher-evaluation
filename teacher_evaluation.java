@@ -33,6 +33,9 @@ public class teacher_evaluation {
 		System.out.println();
 
     teacherList.add(entry); // adding the entry object to the ArrayList teacherList
+
+    askContinue(teacherList);
+
     return teacherList;
   }
 
@@ -44,7 +47,7 @@ public class teacher_evaluation {
 
 	public static void printTeachInfo(evalEntry entry)
 	{
-    System.out.println("Student: " + entry.getStudentName());
+    System.out.println("\nStudent: " + entry.getStudentName());
     System.out.println("Teacher: " + getTeachName());
     System.out.println("Teacher Class: " + getTeachClass());
     System.out.println("Teacher Average Score: " + entry.getTeachScore());
@@ -118,6 +121,22 @@ public class teacher_evaluation {
     System.out.print("What is the class that " + teacherName + " teaches? ");
     teacherClass = scan.nextLine();
   }
+
+  public static List<evalEntry> askContinue(List<evalEntry> teacherList)
+	{
+    System.out.print("Do you want to add another student responce? ");
+    Scanner scan = new Scanner(System.in);
+    String yesNo = scan.nextLine();
+    if(yesNo.equals("yes") || yesNo.equals("Yes"))
+    {
+      createEntry(teacherList);
+      return teacherList;
+    }
+    else
+    {
+      return teacherList;
+    }
+  }  
 }
 
 class evalEntry // represents a student's responce
