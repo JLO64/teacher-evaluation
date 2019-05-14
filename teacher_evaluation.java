@@ -64,8 +64,9 @@ public class teacher_evaluation
 	{
     System.out.println("\nStudent: " + getStudentName());
     System.out.println("Teacher: " + entry.getTeachName());
-    System.out.println("Teacher's Class: " + entry.getTeachClass());
-    System.out.println("Teacher's Average Score: " + entry.getTeachScore());
+    System.out.println("Teacher Class: " + entry.getTeachClass());
+    System.out.println("Teacher Average Score: " + entry.getTeachScore());
+    System.out.println("Teacher Evaluation: " + entry.getTeachEval());
   }
 
   public static void readFile()
@@ -92,13 +93,15 @@ class evalEntry // represents a teacher
   private String teacherName; // instance variable teacherName that is created everytime the class evalEntry is created
   private String teacherClass;
 	private double avgScore;
-	private static List<String> responces = new ArrayList<String>();
+  private static List<String> responces = new ArrayList<String>();
+  private String teacherEvaluation;
 
   public evalEntry() // a constructor
   {
     teacherName = "";
     teacherClass = "";
     avgScore = 0.0;
+    teacherEvaluation = "";
   }
 
   public evalEntry(String newName, String teachClass, double score) // another constructor highlighting method overloading(same method names with different parameters)
@@ -106,6 +109,7 @@ class evalEntry // represents a teacher
     teacherName = newName;
     avgScore = score;
     teacherClass = teachClass;
+    teacherEvaluation = "";
   }
 
   public String getTeachName() // an accesor (doesn't change anything, only accesses instance variables)
@@ -123,6 +127,11 @@ class evalEntry // represents a teacher
     return avgScore;
   }
 
+  public String getTeachEval() // another accesor (doesn't change anything, only accesses the instance variable for the score)
+  {
+    return teacherEvaluation;
+  }
+
   public void teachNameChange(String newName) // a mutator (changes instance variable values)
   {
     teacherName = newName;
@@ -136,7 +145,19 @@ class evalEntry // represents a teacher
   public void teachScoreChange(double score) // another mutator (changes the instance variable for the average score)
   {
     avgScore = score;
-	}
+  }
+  
+  public void teachEvalChange(double score) // a mutator (changes instance variable values)
+  {
+    if(score < 1.0)
+    {
+      teacherEvaluation = "Fire him";
+    }
+    if(score >= 1.0)
+    {
+      teacherEvaluation = "Give him a raise";
+    }
+  }
 	
 	public void askQuestions(List<String> questionList)
 	{
@@ -164,6 +185,7 @@ class evalEntry // represents a teacher
     }
     avgscore = avgscore /countEntries;
     teachScoreChange(round(avgscore, 2));
+    teachEvalChange(avgscore);
   }
 
   public static double round(double value, int places)
