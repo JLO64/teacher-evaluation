@@ -7,8 +7,7 @@ import java.util.*;
 public class teacher_evaluation {
   private static String studentName = "";
   private static List<String> questionList = new ArrayList<String>();
-  private static List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry
-                                                                           // object
+  private static List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry object
 
   public static void main(String[] args) {
     readFile();
@@ -24,8 +23,7 @@ public class teacher_evaluation {
     exportInfo();
   }
 
-  public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList
-                                                                         // rrayList
+  public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList arrayList
   {
     evalEntry entry = new evalEntry();
 
