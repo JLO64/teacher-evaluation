@@ -1,19 +1,16 @@
-
 //Made by Julian Lopez
 
 import java.io.*;
 import java.math.*;
 import java.util.*;
 
-public class teacher_evaluation
-{
+public class teacher_evaluation {
   private static String studentName = "";
   private static List<String> questionList = new ArrayList<String>();
+  private static List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry
+                                                                           // object
 
-  public static void main(String[] args)
-  {
-    List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry object
-
+  public static void main(String[] args) {
     readFile();
 
     Scanner scan = new Scanner(System.in);
@@ -22,10 +19,13 @@ public class teacher_evaluation
 
     createEntry(teacherList);
 
-    printList(teacherList);
+    printList();
+
+    exportInfo();
   }
 
-  public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList rrayList
+  public static List<evalEntry> createEntry(List<evalEntry> teacherList) // creation of an entry in the teacherList
+                                                                         // rrayList
   {
     evalEntry entry = new evalEntry();
 
@@ -36,22 +36,22 @@ public class teacher_evaluation
 
     System.out.print("What class does " + teacherName + " teach? ");
     String teacherClass = scan.nextLine();
-		entry.teachClassChange(teacherClass);
-		
+    entry.teachClassChange(teacherClass);
+
 		entry.askQuestions(questionList);
+		System.out.println();
 
     teacherList.add(entry); // adding the entry object to the ArrayList teacherList
     return teacherList;
   }
 
-	public static void printList(List<evalEntry> teacherList)
+	public static void printList()
 	{
     for (evalEntry eval : teacherList) // for-each list that traverses the ArrayList of the evalEntry object
       printTeachInfo(eval);
   }
 
-	public static void printEntry(List<evalEntry> teacherList, int entryNum)
-	{
+  public static void printEntry(List<evalEntry> teacherList, int entryNum) {
     System.out.println(teacherList.get(entryNum).getTeachName());
   }
 
@@ -60,28 +60,37 @@ public class teacher_evaluation
     return studentName;
   }
 
-	public static void printTeachInfo(evalEntry entry)
-	{
-    System.out.println("\nStudent: " + getStudentName());
+  public static void printTeachInfo(evalEntry entry) {
+    System.out.println("Student: " + getStudentName());
     System.out.println("Teacher: " + entry.getTeachName());
     System.out.println("Teacher Class: " + entry.getTeachClass());
     System.out.println("Teacher Average Score: " + entry.getTeachScore());
     System.out.println("Teacher Evaluation: " + entry.getTeachEval());
   }
 
-  public static void readFile()
-  {
+  public static void readFile() {
+    try {
+      Scanner questionScan = new Scanner(new File("questions.txt"));
+      while (questionScan.hasNextLine()) {
+        String line = questionScan.nextLine();
+        questionList.add(line);
+      }
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      // e.printStackTrace();
+    }
+  }
+
+  public static void exportInfo() {
     try
     {
-      Scanner questionScan = new Scanner(new File("questions.txt"));
-			while(questionScan.hasNextLine())
-			{
-				String line = questionScan.nextLine();
-				questionList.add(line);
-			}
-    }
-    catch (FileNotFoundException e)
-    {
+			PrintStream textF = new PrintStream(new File("student_responces.txt"));
+			System.setOut(textF);
+
+    	printList();
+		}
+		catch (FileNotFoundException e)
+		{
       // TODO Auto-generated catch block
       //e.printStackTrace();
     }    
