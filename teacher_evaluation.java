@@ -28,8 +28,10 @@ public class teacher_evaluation {
     evalEntry entry = new evalEntry();
 
     entry.studentNameChange();
+    entry.changeStudentPeriod();
 
-		entry.askQuestions(questionList);
+    entry.askQuestions(questionList);
+    entry.changeStudentComment();
 		System.out.println();
 
     teacherList.add(entry); // adding the entry object to the ArrayList teacherList
@@ -50,9 +52,12 @@ public class teacher_evaluation {
     System.out.println("\nStudent: " + entry.getStudentName());
     System.out.println("Teacher: " + getTeachName());
     System.out.println("Teacher Class: " + getTeachClass());
+    System.out.println("Class Period: " + entry.getStudentPeriod());
     System.out.println("Teacher Average Score: " + entry.getTeachScore());
     System.out.println("Teacher Evaluation: " + entry.getTeachEval());
+    System.out.println("Student Replies To Questions: ");
     entry.printResponses(questionList);
+    System.out.println("Student Comments: " + entry.getStudentComment());
 	}
 
   public static void readFile()
@@ -142,9 +147,11 @@ public class teacher_evaluation {
 class evalEntry // represents a student's responce
 {
 	private double avgScore; // instance variable teacherName that is created everytime the class evalEntry is created
-  private static List<String> responces = new ArrayList<String>();
+  private List<String> responces = new ArrayList<String>();
   private String teacherEvaluation;
-  private static String studentName = "";
+  private String studentName;
+  private String studentComment;
+  private String studentPeriod;
 
   public evalEntry() // a constructor
   {
@@ -173,6 +180,30 @@ class evalEntry // represents a student's responce
     avgScore = score;
   }
   
+  public String getStudentComment()
+  {
+    return studentComment;
+  }
+
+  public String getStudentPeriod()
+  {
+    return studentPeriod;
+  }
+
+  public void changeStudentPeriod()
+  {
+    System.out.print("What period do you have " + teacher_evaluation.getTeachName() + "? ");
+    Scanner scan = new Scanner(System.in);
+    studentPeriod = scan.nextLine();
+  }
+
+  public void changeStudentComment()
+  {
+    System.out.print("Please type any comments you may have: ");
+    Scanner scan = new Scanner(System.in);
+    studentComment = scan.nextLine();
+  }
+
   public void teachEvalChange(double score) // a mutator (changes instance variable values)
   {
     if(score == 1.0)
@@ -235,7 +266,7 @@ class evalEntry // represents a student's responce
     int i = 0;
     for (String question : questionList)
 		{
-      System.out.println(question + " " + responces.get(i));
+      System.out.println( " " + question + " " + responces.get(i));
       i++;
 		}
   }
