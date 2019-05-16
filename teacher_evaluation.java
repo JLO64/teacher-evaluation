@@ -9,16 +9,17 @@ public class teacher_evaluation {
   private static String teacherClass;
   private static List<String> questionList = new ArrayList<String>();
   private static List<evalEntry> teacherList = new ArrayList<evalEntry>(); // creation of an ArrayList of the evalEntry object
+  private static int classSize = 0;
+  private static String classPeriod;
 
   public static void main(String[] args) {
     readFile();
 
     teachNameChange();
     teachClassChange();
+    changeClassPeriod();
     
     createEntry(teacherList);
-
-    printList();
 
     exportInfo();
   }
@@ -27,9 +28,8 @@ public class teacher_evaluation {
   {
     evalEntry entry = new evalEntry();
 
-    entry.studentNameChange();
-    entry.changeStudentPeriod();
-
+    classSize = entry.studentNumChange(classSize);
+    System.out.println("\nStudent Number: " + classSize);
     entry.askQuestions(questionList);
     entry.changeStudentComment();
 		System.out.println();
@@ -43,16 +43,16 @@ public class teacher_evaluation {
 
 	public static void printList()
 	{
+    System.out.println("Teacher: " + getTeachName());
+    System.out.println("Teacher Class: " + getTeachClass());
+    System.out.println("Class Period: " + classPeriod);
     for (evalEntry eval : teacherList) // for-each list that traverses the ArrayList of the evalEntry object
       printTeachInfo(eval);
   }  
 
 	public static void printTeachInfo(evalEntry entry)
 	{
-    System.out.println("\nStudent: " + entry.getStudentName());
-    System.out.println("Teacher: " + getTeachName());
-    System.out.println("Teacher Class: " + getTeachClass());
-    System.out.println("Class Period: " + entry.getStudentPeriod());
+    System.out.println("\nStudent: " + entry.getStudentNum());
     System.out.println("Teacher Average Score: " + entry.getTeachScore());
     System.out.println("Teacher Evaluation: " + entry.getTeachEval());
     System.out.println("Student Replies To Questions: ");
@@ -141,6 +141,18 @@ public class teacher_evaluation {
     {
       return teacherList;
     }
+  }
+  
+  public static String getClassPeriod()
+  {
+    return classPeriod;
+  }
+
+  public static void changeClassPeriod()
+  {
+    System.out.print("What period of " + getTeachName() + "'s' " + teacher_evaluation.getTeachClass() + " class are you evaluating? ");
+    Scanner scan = new Scanner(System.in);
+    classPeriod = scan.nextLine();
   }  
 }
 
@@ -151,7 +163,7 @@ class evalEntry // represents a student's responce
   private String teacherEvaluation;
   private String studentName;
   private String studentComment;
-  private String studentPeriod;
+  private int studentNum;
 
   public evalEntry() // a constructor
   {
@@ -185,18 +197,6 @@ class evalEntry // represents a student's responce
     return studentComment;
   }
 
-  public String getStudentPeriod()
-  {
-    return studentPeriod;
-  }
-
-  public void changeStudentPeriod()
-  {
-    System.out.print("What period do you have " + teacher_evaluation.getTeachName() + "? ");
-    Scanner scan = new Scanner(System.in);
-    studentPeriod = scan.nextLine();
-  }
-
   public void changeStudentComment()
   {
     System.out.print("Please type any comments you may have: ");
@@ -220,16 +220,15 @@ class evalEntry // represents a student's responce
     }    
   }
 
-  public String getStudentName() // an accesor (doesn't change anything, only accesses instance variables)
+  public int getStudentNum() // an accesor (doesn't change anything, only accesses instance variables)
   {
-    return studentName;
+    return studentNum;
   }
 
-  public void studentNameChange() // an accesor (doesn't change anything, only accesses instance variables)
+  public int studentNumChange(int newNum) // an accesor (doesn't change anything, only accesses instance variables)
   {
-    System.out.print("\nWhat is the name of the student filling out this form? ");
-    Scanner scan = new Scanner(System.in);
-    studentName = scan.nextLine();
+    studentNum = newNum + 1;
+    return studentNum;
   }
 	
 	public void askQuestions(List<String> questionList)
@@ -239,8 +238,24 @@ class evalEntry // represents a student's responce
 		{
 			System.out.print(question + " ");
 			Scanner response = new Scanner(System.in);
-			String responceLine = response.nextLine();
-			responces.add(responceLine);
+      String responceLine = response.nextLine();
+      boolean compareStr = false;
+      
+      while(compareStr == false)
+      {
+        if(responceLine.equals("Agree") || responceLine.equals("agree") || responceLine.equals("Disgree") || responceLine.equals("Disagree"))
+        {
+          responces.add(responceLine);
+          compareStr = true;
+        }
+        else
+        {
+          System.out.println("  Please reply with either \"Agree\" or \"Disagree\"");
+          System.out.print(question + " ");
+          responceLine = response.nextLine();
+        }
+      }
+			
 		}
 		double countEntries = 0;
 		double avgscore = 0;
@@ -251,10 +266,10 @@ class evalEntry // represents a student's responce
 			{
         avgscore = avgscore + 1;
 			}
-			if(input.equals("Disagree") || input.equals("disagree"))
+			else if(input.equals("Disagree") || input.equals("disagree"))
 			{
 				avgscore = avgscore + 0;
-			}
+      }
     }
     avgscore = avgscore /countEntries;
     teachScoreChange(round(avgscore, 2));
@@ -266,7 +281,7 @@ class evalEntry // represents a student's responce
     int i = 0;
     for (String question : questionList)
 		{
-      System.out.println( " " + question + " " + responces.get(i));
+      System.out.println( "   " + question + " " + responces.get(i));
       i++;
 		}
   }
