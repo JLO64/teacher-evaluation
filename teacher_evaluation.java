@@ -1,7 +1,6 @@
 //Made by Julian Lopez
 
 import java.io.*;
-import java.math.*;
 import java.util.*;
 
 public class teacher_evaluation {
@@ -132,15 +131,19 @@ public class teacher_evaluation {
     System.out.print("Do you want to add another student responce? ");
     Scanner scan = new Scanner(System.in);
     String yesNo = scan.nextLine();
-    if(yesNo.equals("yes") || yesNo.equals("Yes"))
+    boolean yesnoTrue = false;
+    while(yesnoTrue = false)
     {
-      createEntry(teacherList);
-      return teacherList;
+      if(yesNo.equals("yes") || yesNo.equals("Yes") || yesNo.equals("no") || yesNo.equals("No"))
+      {
+        createEntry(teacherList);        
+      }
+      else
+      {
+        System.out.println("Please reply with either \"Yes\" or \"No\"");
+      }
     }
-    else
-    {
-      return teacherList;
-    }
+    return teacherList;    
   }
   
   public static String getClassPeriod()
@@ -158,39 +161,10 @@ public class teacher_evaluation {
 
 class evalEntry // represents a student's responce
 {
-	private double avgScore; // instance variable teacherName that is created everytime the class evalEntry is created
   private List<String> responces = new ArrayList<String>();
-  private String teacherEvaluation;
-  private String studentName;
   private String studentComment;
-  private int studentNum;
+  private int studentNum; //instance variable teacherName that is created everytime the class evalEntry is created
 
-  public evalEntry() // a constructor
-  {
-    avgScore = 0.0;
-    teacherEvaluation = "";
-  }
-
-  public evalEntry(double score) // another constructor highlighting method overloading(same method names with different parameters)
-  {
-    avgScore = score;
-    teacherEvaluation = "";
-  }
-
-  public double getTeachScore() // another accesor (doesn't change anything, only accesses the instance variable for the score)
-  {
-    return avgScore;
-  }
-
-  public String getTeachEval() // another accesor (doesn't change anything, only accesses the instance variable for the score)
-  {
-    return teacherEvaluation;
-  }
-
-  public void teachScoreChange(double score) // another mutator (changes the instance variable for the average score)
-  {
-    avgScore = score;
-  }
   
   public String getStudentComment()
   {
@@ -202,22 +176,6 @@ class evalEntry // represents a student's responce
     System.out.print("Please type any comments you may have: ");
     Scanner scan = new Scanner(System.in);
     studentComment = scan.nextLine();
-  }
-
-  public void teachEvalChange(double score) // a mutator (changes instance variable values)
-  {
-    if(score == 1.0)
-    {
-      teacherEvaluation = "Give him a raise";
-    }
-    if(score < 1.0)
-    {
-      teacherEvaluation = "Not a bad teacher";
-    }
-    if(score == 0.0)
-    {
-      teacherEvaluation = "Fire him";
-    }    
   }
 
   public int getStudentNum() // an accesor (doesn't change anything, only accesses instance variables)
@@ -243,7 +201,7 @@ class evalEntry // represents a student's responce
       
       while(compareStr == false)
       {
-        if(responceLine.equals("Agree") || responceLine.equals("agree") || responceLine.equals("Disgree") || responceLine.equals("Disagree"))
+        if(responceLine.equals("Agree") || responceLine.equals("agree") || responceLine.equals("Disgree") || responceLine.equals("disagree"))
         {
           responces.add(responceLine);
           compareStr = true;
@@ -256,24 +214,7 @@ class evalEntry // represents a student's responce
         }
       }
 			
-		}
-		double countEntries = 0;
-		double avgscore = 0;
-		for (String input : responces)
-		{
-      countEntries++;
-			if(input.equals("Agree") || input.equals("agree"))
-			{
-        avgscore = avgscore + 1;
-			}
-			else if(input.equals("Disagree") || input.equals("disagree"))
-			{
-				avgscore = avgscore + 0;
-      }
-    }
-    avgscore = avgscore /countEntries;
-    teachScoreChange(round(avgscore, 2));
-    teachEvalChange(avgscore);
+		}		
   }
 
   public void printResponses()
@@ -284,12 +225,4 @@ class evalEntry // represents a student's responce
 		}
   }
 
-  public static double round(double value, int places)
-  {
-    if (places < 0) throw new IllegalArgumentException();
-
-    BigDecimal bd = new BigDecimal(value);
-    bd = bd.setScale(places, RoundingMode.HALF_UP);
-    return bd.doubleValue();
-  }
 }
