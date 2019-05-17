@@ -52,12 +52,12 @@ public class teacher_evaluation {
 
 	public static void printTeachInfo(evalEntry entry)
 	{
-    System.out.println("\nStudent: " + entry.getStudentNum());
-    System.out.println("Teacher Average Score: " + entry.getTeachScore());
-    System.out.println("Teacher Evaluation: " + entry.getTeachEval());
-    System.out.println("Student Replies To Questions: ");
-    entry.printResponses(questionList);
-    System.out.println("Student Comments: " + entry.getStudentComment());
+    System.out.print("\nStudent: " + entry.getStudentNum());
+    //System.out.print(", Teacher Average Score: " + entry.getTeachScore());
+    //System.out.print(", Teacher Evaluation: " + entry.getTeachEval());
+    System.out.print(", Student Replies To Questions: ");
+    entry.printResponses();
+    System.out.print(", Student Comments: " + entry.getStudentComment());
 	}
 
   public static void readFile()
@@ -81,7 +81,7 @@ public class teacher_evaluation {
 	{
     try
     {
-			PrintStream textF = new PrintStream(new File("student_responces.txt"));
+			PrintStream textF = new PrintStream(new File(teacherName + teacherClass + classPeriod + "student_responces.txt"));
 			System.setOut(textF);
 
     	printList();
@@ -276,13 +276,11 @@ class evalEntry // represents a student's responce
     teachEvalChange(avgscore);
   }
 
-  public void printResponses(List<String> questionList)
+  public void printResponses()
 	{
-    int i = 0;
-    for (String question : questionList)
+    for (String responces : responces)
 		{
-      System.out.println( "   " + question + " " + responces.get(i));
-      i++;
+      System.out.print(", " + responces);
 		}
   }
 
